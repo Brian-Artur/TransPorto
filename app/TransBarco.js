@@ -1,4 +1,4 @@
-import { Transport } from "./Transport";
+import { Transport } from "./Transport.js";
 export class TransBarco extends Transport {
     constructor() {
         super(...arguments);

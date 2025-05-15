@@ -1,4 +1,4 @@
-import { Transport } from "./Transport";
+import { Transport } from "./Transport.js";
 
 export class TransBarco extends Transport {
   private costoPorKm: number = 0.04; // € por km
