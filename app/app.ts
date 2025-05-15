@@ -8,7 +8,7 @@ type TransportResult = {
 
 class Transporte {
   private readonly costeTerrestre = 100; // €/tonelada
-  private readonly costeMarítimo = 60; // €/tonelada
+  private readonly costeMarítimo = 50; // €/tonelada
   private readonly limiteTerrestre = 5; // toneladas
 
   calcular(toneladas: number): TransportResult {
