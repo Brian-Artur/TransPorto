@@ -6,7 +6,8 @@ export class TransBarco extends Transport {
         this.tipo = "marítimo";
     }
     calcularCosto(distancia, peso) {
-        return distancia * this.costoPorKm * peso;
+        const res = distancia * this.costoPorKm * peso;
+        return parseFloat(res.toFixed(2));
     }
     getTipo() {
         return this.tipo;

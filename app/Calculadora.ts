@@ -3,68 +3,98 @@ import { TransCamion } from "./TransCamion.js";
 import { Transport } from "./Transport.js";
 
 (() => {
-
-
   class Calculadora {
     private terrestre: Transport;
     private maritimo: Transport;
-    private tipoTrans: string = "";
+
     public costoTotal: number = 0;
+
+    private tipoTrans: string = "";
+    private mar: boolean;
+    private tierra: boolean;
 
     constructor() {
       this.terrestre = new TransCamion();
       this.maritimo = new TransBarco();
+
+      this.mar = confirm("Hay mar en la ruta?")
+      this.tierra = confirm("Hay tierra en la ruta?")
+      this.tipoTrans = this.preguntarTrans()
+
+      this.asignar()
     }
 
-    asignarTrans(tierra: boolean, mar: boolean): void {
-      if (tierra && !mar) {
-        this.tipoTrans = "terrestre";
-      } else if (!tierra && mar) {
-        this.tipoTrans = "marítimo"
+    preguntarTrans(): string {
+      if (this.tierra && !this.mar) {
+        return "terrestre";
+      } else if (!this.tierra && this.mar) {
+        return "marítimo"
       }
-      this.tipoTrans = "mixto";
+      return "mixto";
     }
 
+    asignar(): void {
+      switch (this.tipoTrans) {
+        case "mixto":
+          this.calcularMixto()
+          break;
+        case "terrestre":
+          this.calcularTerrestre()
+          break;
+        case "marítimo":
+          this.calcularMaritimo()
+          break;
+        default:
+          break;
+      }
+    }
 
+    calcularMixto(): Object {
 
-    calcularMixto(
-      distanciaCamion: number,
-      distanciaBarco: number,
-      peso: number): Object {
+      let distanciaCamion: number = Number(prompt("Indique su distancia por carretera"))
+      let distanciaBarco: number = Number(prompt("Indique su distancia por mar"))
+      let peso: number = Number(prompt("Indique el pseo de la carga (en tonaladas)"))
 
       const costoTerrestre = this.terrestre.calcularCosto(distanciaCamion, peso);
       const costoMaritimo = this.maritimo.calcularCosto(distanciaBarco, peso);
 
       this.costoTotal = costoTerrestre + costoMaritimo;
       let detalles = {
-        terrestre: costoTerrestre,
-        maritimo: costoMaritimo,
-        camionesNecesarios: Math.ceil(peso / 5)
+        medio: this.tipoTrans,
+        camionesNecesarios: Math.ceil(peso / 5),
+        costeCarretera: costoTerrestre,
+        costeMaritimo: costoMaritimo,
+        costeTotal: this.costoTotal
       };
+      console.log(detalles);
+      return detalles;
+    }
+
+    calcularMaritimo() {
+      let distanciaBarco: number = Number(prompt("Indique su distancia por mar"))
+      let peso: number = Number(prompt("Indique el pseo de la carga (en tonaladas)"))
+
+      this.costoTotal = this.maritimo.calcularCosto(distanciaBarco, peso);
+      let detalles = {
+        medio: this.tipoTrans,
+        coste: this.costoTotal
+      }
       console.log(detalles);
     }
 
-    calcularMaritimo(
-      distanciaBarco: number,
-      peso: number
-    ) {
-      this.costoTotal = this.maritimo.calcularCosto(distanciaBarco, peso);
-      console.log(this.costoTotal);
-    }
+    calcularTerrestre() {
+      let distanciaCamion: number = Number(prompt("Indique su distancia por carretera"))
+      let peso: number = Number(prompt("Indique el pseo de la carga (en tonaladas)"))
 
-    calcularTerrestre(
-      distanciaCamion: number,
-      peso: number
-    ) {
       this.costoTotal = this.terrestre.calcularCosto(distanciaCamion, peso);
       let detalles = {
-        terrestre: this.costoTotal,
-        camionesNecesarios: Math.ceil(peso / 5)
+        medio: this.tipoTrans,
+        camionesNecesarios: Math.ceil(peso / 5),
+        costeTerrestre: this.costoTotal
       }
       console.log(detalles);
     }
   }
 
-  let manolo = new Calculadora();
-  const res = manolo.calcularMixto(150, 250, 200)
+  const myApp = new Calculadora();
 })()

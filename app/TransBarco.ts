@@ -11,7 +11,8 @@ export class TransBarco extends Transport {
    * @returns Costo
    */
   calcularCosto(distancia: number, peso: number): number {
-    return distancia * this.costoPorKm * peso;
+    const res = distancia * this.costoPorKm * peso;
+    return parseFloat(res.toFixed(2))
   }
 
   public getTipo(): string {

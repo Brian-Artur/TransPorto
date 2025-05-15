@@ -15,7 +15,8 @@ export class TransCamion extends Transport {
   calcularCosto(distancia: number, peso: number): number {
     //                  Redondeo techo
     const numeroCamiones = Math.ceil(peso / this.limitePorCamion);  // Camiones necesarios
-    return distancia * this.costoPorKm * numeroCamiones;
+    const res = distancia * this.costoPorKm * numeroCamiones;
+    return parseFloat(res.toFixed(2))
   }
 
   public getTipo(): string {
