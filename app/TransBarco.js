@@ -1,19 +1,15 @@
-"use strict";
-(() => {
-    class TransBarco {
-        constructor() {
-            this.costoPorKm = 0.04;
-            this.tipo = "marítimo";
-        }
-        calcularCosto(distancia, peso) {
-            return distancia * this.costoPorKm * peso;
-        }
-        getTipo() {
-            return this.tipo;
-        }
+import { Transport } from "./Transport";
+class TransBarco extends Transport {
+    constructor() {
+        super(...arguments);
+        this.costoPorKm = 0.04;
+        this.tipo = "marítimo";
     }
-    const transCarlos = new TransBarco();
-    let res = transCarlos.calcularCosto(450, 1);
-    console.log(res);
-})();
+    calcularCosto(distancia, peso) {
+        return distancia * this.costoPorKm * peso;
+    }
+    getTipo() {
+        return this.tipo;
+    }
+}
 //# sourceMappingURL=TransBarco.js.map
