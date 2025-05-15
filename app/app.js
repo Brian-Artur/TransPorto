@@ -1,37 +1,54 @@
-(function () { })();
-var Transporte = /** @class */ (function () {
-    function Transporte() {
-        this.costeTerrestre = 100; // €/tonelada
-        this.costeMarítimo = 60; // €/tonelada
-        this.limiteTerrestre = 5; // toneladas
-    }
-    Transporte.prototype.calcular = function (toneladas) {
-        if (toneladas <= 0) {
-            throw new Error("La cantidad de toneladas debe ser mayor que 0.");
-        }
-        var tipo;
-        var costeTerrestre = 0;
-        var costeMarítimo = 0;
-        if (toneladas <= this.limiteTerrestre) {
-            tipo = "terrestre";
-            costeTerrestre = toneladas * this.costeTerrestre;
-        }
-        else if (toneladas > this.limiteTerrestre) {
-            tipo = "mixto";
-            costeTerrestre = this.limiteTerrestre * this.costeTerrestre;
-            var toneladasPorMar = toneladas - this.limiteTerrestre;
-            costeMarítimo = toneladasPorMar * this.costeMarítimo;
-        }
-        var costeTotal = costeTerrestre + costeMarítimo;
-        return { tipo: tipo, costeTerrestre: costeTerrestre, costeMarítimo: costeMarítimo, costeTotal: costeTotal };
+"use strict";
+(() => {
+    const CITIES = {
+        coastal: ["Bilbao", "Vigo", "Cádiz", "Valencia", "Barcelona"],
+        inland: ["Valladolid", "Zaragoza", "Madrid", "Badajoz", "Granada"],
     };
-    return Transporte;
-}());
-// Ejemplo de uso:
-var app = new Transporte();
-var toneladas = 8; // Puedes cambiarlo por cualquier número
-var resultado = app.calcular(toneladas);
-console.log("Tipo de transporte: ".concat(resultado.tipo));
-console.log("Coste terrestre: \u20AC".concat(resultado.costeTerrestre));
-console.log("Coste mar\u00EDtimo: \u20AC".concat(resultado.costeMarítimo));
-console.log("Coste total: \u20AC".concat(resultado.costeTotal));
+    const RATES = {
+        terrestrial: 100,
+        maritime: 50,
+        maxWeightPerVehicle: 5,
+    };
+    function getTransportType(origin, destination) {
+        const isOriginCoastal = CITIES.coastal.includes(origin);
+        const isDestCoastal = CITIES.coastal.includes(destination);
+        if (!isOriginCoastal && !isDestCoastal)
+            return "terrestrial";
+        if (isOriginCoastal && isDestCoastal)
+            return "maritime";
+        return "mixed";
+    }
+    function calculateTransportCost(origin, destination, weight) {
+        const transportType = getTransportType(origin, destination);
+        let cost = 0;
+        if (transportType === "terrestrial" || transportType === "mixed") {
+            const vehicles = Math.ceil(weight / RATES.maxWeightPerVehicle);
+            cost += vehicles * weight * RATES.terrestrial;
+        }
+        if (transportType === "maritime" || transportType === "mixed") {
+            cost += weight * RATES.maritime;
+        }
+        return cost;
+    }
+    window.calculateCost = function () {
+        const origin = document.getElementById("origin")
+            .value;
+        const destination = document.getElementById("destination").value;
+        const weight = parseFloat(document.getElementById("weight").value);
+        try {
+            const cost = calculateTransportCost(origin, destination, weight);
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `
+            <h3>Resultado</h3>
+            <p><strong>Ruta:</strong> ${origin} → ${destination}</p>
+            <p><strong>Tipo:</strong> ${getTransportType(origin, destination)}</p>
+            <p><strong>Coste total:</strong> ${cost.toFixed(2)}€</p>
+        `;
+            resultDiv.style.display = "block";
+        }
+        catch (error) {
+            alert(error.message);
+        }
+    };
+})();
+//# sourceMappingURL=app.js.map
