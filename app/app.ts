@@ -1,8 +1,8 @@
 (()=>{
 
   class TransCamion{
-    private costoPorKm: number = 0.15; // € por km cada tonelada
-    private limitePorCamion: number = 5; // 5 toneladas por camión
+    private costoPorKm: number = 0.15; // € por km
+    private limitePorCamion: number = 5; // 5 ton por camión
     private tipo: string = "terrestre";
     /**
      * Calcula el costo sin tener en cuenta si está lleno o medio vacío. Ya
