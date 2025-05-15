@@ -13,10 +13,10 @@
         const isOriginCoastal = CITIES.coastal.includes(origin);
         const isDestCoastal = CITIES.coastal.includes(destination);
         if (!isOriginCoastal && !isDestCoastal)
-            return "terrestrial";
+            return "terrestre";
         if (isOriginCoastal && isDestCoastal)
-            return "maritime";
-        return "mixed";
+            return "maritimo";
+        return "mixto";
     }
     function calculateLandCost(weight) {
         const vehicles = Math.ceil(weight / RATES.maxWeightPerVehicle);
@@ -28,11 +28,11 @@
     function calculateTransportCost(origin, destination, weight) {
         const transportType = getTransportType(origin, destination);
         switch (transportType) {
-            case "terrestrial":
+            case "terrestre":
                 return calculateLandCost(weight);
-            case "maritime":
+            case "maritimo":
                 return calculateSeaCost(weight);
-            case "mixed":
+            case "mixto":
                 return calculateLandCost(weight) + calculateSeaCost(weight);
             default:
                 throw new Error("Tipo de transporte no válido");
@@ -55,7 +55,11 @@
             resultDiv.style.display = "block";
         }
         catch (error) {
-            alert(error.message);
+            let errorMessage = "Ocurrió un error";
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+            alert(errorMessage);
         }
     };
 })();
