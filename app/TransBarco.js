@@ -1,5 +1,5 @@
 import { Transport } from "./Transport";
-class TransBarco extends Transport {
+export class TransBarco extends Transport {
     constructor() {
         super(...arguments);
         this.costoPorKm = 0.04;

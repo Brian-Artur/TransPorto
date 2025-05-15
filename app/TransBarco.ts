@@ -1,6 +1,6 @@
 import { Transport } from "./Transport";
 
-class TransBarco extends Transport {
+export class TransBarco extends Transport {
   private costoPorKm: number = 0.04; // € por km
   private tipo: string = "marítimo";
   /**
