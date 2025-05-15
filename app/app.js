@@ -18,17 +18,25 @@
             return "maritime";
         return "mixed";
     }
+    function calculateLandCost(weight) {
+        const vehicles = Math.ceil(weight / RATES.maxWeightPerVehicle);
+        return vehicles * weight * RATES.terrestrial;
+    }
+    function calculateSeaCost(weight) {
+        return weight * RATES.maritime;
+    }
     function calculateTransportCost(origin, destination, weight) {
         const transportType = getTransportType(origin, destination);
-        let cost = 0;
-        if (transportType === "terrestrial" || transportType === "mixed") {
-            const vehicles = Math.ceil(weight / RATES.maxWeightPerVehicle);
-            cost += vehicles * weight * RATES.terrestrial;
+        switch (transportType) {
+            case "terrestrial":
+                return calculateLandCost(weight);
+            case "maritime":
+                return calculateSeaCost(weight);
+            case "mixed":
+                return calculateLandCost(weight) + calculateSeaCost(weight);
+            default:
+                throw new Error("Tipo de transporte no válido");
         }
-        if (transportType === "maritime" || transportType === "mixed") {
-            cost += weight * RATES.maritime;
-        }
-        return cost;
     }
     window.calculateCost = function () {
         const origin = document.getElementById("origin")

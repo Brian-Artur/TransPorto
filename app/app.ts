@@ -23,24 +23,32 @@
   }
 
   // Calcula coste total
+  function calculateLandCost(weight: number): number {
+    const vehicles = Math.ceil(weight / RATES.maxWeightPerVehicle);
+    return vehicles * weight * RATES.terrestrial;
+  }
+
+  function calculateSeaCost(weight: number): number {
+    return weight * RATES.maritime;
+  }
+
   function calculateTransportCost(
     origin: string,
     destination: string,
     weight: number
   ): number {
     const transportType = getTransportType(origin, destination);
-    let cost = 0;
 
-    if (transportType === "terrestrial" || transportType === "mixed") {
-      const vehicles = Math.ceil(weight / RATES.maxWeightPerVehicle);
-      cost += vehicles * weight * RATES.terrestrial;
+    switch (transportType) {
+      case "terrestrial":
+        return calculateLandCost(weight);
+      case "maritime":
+        return calculateSeaCost(weight);
+      case "mixed":
+        return calculateLandCost(weight) + calculateSeaCost(weight);
+      default:
+        throw new Error("Tipo de transporte no válido");
     }
-
-    if (transportType === "maritime" || transportType === "mixed") {
-      cost += weight * RATES.maritime;
-    }
-
-    return cost;
   }
 
   // Función para manejar el cálculo desde HTML
