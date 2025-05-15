@@ -1,6 +1,6 @@
-import { TransBarco } from "./TransBarco.js";
-import { TransCamion } from "./TransCamion.js";
-import { Transport } from "./Transport.js";
+import { TransBarco } from "../transporte/TransBarco.js";
+import { TransCamion } from "../transporte/TransCamion.js";
+import { Transport } from "../transporte/Transport.js";
 
 
 export class Calculadora {

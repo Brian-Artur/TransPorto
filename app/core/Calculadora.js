@@ -1,5 +1,5 @@
-import { TransBarco } from "./TransBarco.js";
-import { TransCamion } from "./TransCamion.js";
+import { TransBarco } from "../transporte/TransBarco.js";
+import { TransCamion } from "../transporte/TransCamion.js";
 export class Calculadora {
     constructor() {
         this.costoTotal = 0;
